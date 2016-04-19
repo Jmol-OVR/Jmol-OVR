@@ -127,6 +127,9 @@ import org.jmol.util.Parser;
 import org.jmol.util.Rectangle;
 import org.jmol.util.TempArray;
 import org.jmol.viewer.binding.Binding;
+//Start OculusVR Patch
+import org.mosmar.ovrui.OculusWS;
+//End OculusVR Patch
 
 /*
  * 
@@ -610,6 +613,11 @@ public class Viewer extends JmolViewer implements AtomDataServer,
       Logger.info(JC.copyright
           + "\nJmol Version: "
           + getJmolVersion()
+          //Start OculusVR Patch
+          //Start up console message letting the user know if OVR mode is eanbled or not
+          + "\nOculusVR Mode: "
+          + ((info.get("oculusVRMode") != null)?"Enabled":"Disabled")
+          //End OculusVR Patch
           + "\njava.vendor: "
           + strJavaVendor
           + "\njava.version: "
@@ -636,6 +644,14 @@ public class Viewer extends JmolViewer implements AtomDataServer,
     // this code will be shared between Jmol 14.0 and 14.1
     Elements.covalentVersion = Elements.RAD_COV_BODR_2014_02_22;
     allowArrayDotNotation = true;
+    //Start OculusVR Patch
+    if(info.get("oculusVRMode") != null) {
+      //Send and instance of the viewer and the transform manager 
+      //The OculusWS singleton class handles the rest
+      OculusWS.getInstance().init(this, tm, acm);
+  }
+    //End OculusVR Patch
+
   }
 
   public void setDisplay(Object canvas) {

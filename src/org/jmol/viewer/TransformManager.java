@@ -726,7 +726,7 @@ public class TransformManager {
    * may not be the same as zmPct, particularly  if zoom is not enabled
    * 
    */
-  float zmPctSet = 100;
+  public float zmPctSet = 100;
   
   public void setZoomHeight(boolean zoomHeight, boolean zoomLarge) {
     this.zoomHeight = zoomHeight;

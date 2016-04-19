@@ -79,6 +79,7 @@ import org.jmol.viewer.ShapeManager;
 import org.jmol.viewer.StateManager;
 import org.jmol.viewer.TransformManager;
 import org.jmol.viewer.Viewer;
+import org.mosmar.ovrui.OculusWS;
 
 public class ScriptEval extends ScriptExpr {
 
@@ -4929,6 +4930,13 @@ public class ScriptEval extends ScriptExpr {
     if (script.length() > 0 && !isCmdLine_c_or_C_Option)
       // NOT checking embedded scripts in some cases
       runScript(script);
+
+    //TODO: Create proper event listener model
+    //The following line will inform Oculus handler that loading is complete for it to reset the view
+    //See the body of resetView method for more information
+    if(vwr.vwrOptions.get("oculusVRMode") != null) {
+      OculusWS.getInstance().resetViewer();
+  }
   }
 
   private void cmdLog() throws ScriptException {

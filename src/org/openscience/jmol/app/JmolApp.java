@@ -216,6 +216,9 @@ public class JmolApp implements JmolAppAPI {
     options.addOption("x", "exit", false,
         GT._("exit after script (implicit with -n)"));
 
+    options.addOption("V", "oculusVRMode", false,
+        GT._("enables OculusVR mode"));
+
     return options;
   }
   
@@ -479,6 +482,11 @@ public class JmolApp implements JmolAppAPI {
       // exit when script completes (or file is read)
       exitUponCompletion = true;
 
+    //-V Enables the VR Mode
+    if(line.hasOption("V")){
+      info.put("oculusVRMode", Boolean.TRUE);
+    }
+    
     if (!haveDisplay)
       info.put("noDisplay", Boolean.TRUE);
     if (exitUponCompletion) {

@@ -405,18 +405,31 @@ public class Quat {
     return mat;
   }
 
+//  private void setMatrix() {
+//    mat = new M3();
+//    // q0 = w, q1 = x, q2 = y, q3 = z
+//    mat.m00 = q0 * q0 + q1 * q1 - q2 * q2 - q3 * q3;
+//    mat.m01 = 2 * q1 * q2 - 2 * q0 * q3;
+//    mat.m02 = 2 * q1 * q3 + 2 * q0 * q2;
+//    mat.m10 = 2 * q1 * q2 + 2 * q0 * q3;
+//    mat.m11 = q0 * q0 - q1 * q1 + q2 * q2 - q3 * q3;
+//    mat.m12 = 2 * q2 * q3 - 2 * q0 * q1;
+//    mat.m20 = 2 * q1 * q3 - 2 * q0 * q2;
+//    mat.m21 = 2 * q2 * q3 + 2 * q0 * q1;
+//    mat.m22 = q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3;
+//  }
   private void setMatrix() {
     mat = new M3();
     // q0 = w, q1 = x, q2 = y, q3 = z
-    mat.m00 = q0 * q0 + q1 * q1 - q2 * q2 - q3 * q3;
+    mat.m00 = 2 * (q0 * q0 + q1 * q1) - 1;
     mat.m01 = 2 * q1 * q2 - 2 * q0 * q3;
     mat.m02 = 2 * q1 * q3 + 2 * q0 * q2;
     mat.m10 = 2 * q1 * q2 + 2 * q0 * q3;
-    mat.m11 = q0 * q0 - q1 * q1 + q2 * q2 - q3 * q3;
+    mat.m11 = 2 * (q0 * q0 + q2 * q2) - 1;
     mat.m12 = 2 * q2 * q3 - 2 * q0 * q1;
     mat.m20 = 2 * q1 * q3 - 2 * q0 * q2;
     mat.m21 = 2 * q2 * q3 + 2 * q0 * q1;
-    mat.m22 = q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3;
+    mat.m22 = 2 * (q0 * q0 + q3 * q3) - 1;
   }
 
   public Quat add(float x) {

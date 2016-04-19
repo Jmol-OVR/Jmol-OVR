@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="jars/JSpecView.jar"/>
 	<classpathentry kind="lib" path="jars/naga-3_0.jar"/>
 	<classpathentry kind="lib" path="jars/commons-cli-1.2.jar"/>
+	<classpathentry kind="lib" path="jars/jna-4.1.0.jar"/>
+	<classpathentry kind="lib" path="jars/jovr-0.4.4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

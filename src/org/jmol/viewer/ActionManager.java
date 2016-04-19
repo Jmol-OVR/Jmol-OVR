@@ -50,11 +50,12 @@ import javajs.util.P3;
 import org.jmol.util.Rectangle;
 import org.jmol.viewer.binding.Binding;
 import org.jmol.viewer.binding.JmolBinding;
+import org.mosmar.ovrui.OculusWS;
 
 @J2SRequireImport({ org.jmol.i18n.GT.class })
 public class ActionManager implements EventManager {
 
-  protected Viewer vwr;
+  public Viewer vwr;
   protected boolean haveMultiTouchInput;  
   protected boolean isMultiTouch;
   
@@ -633,7 +634,7 @@ public class ActionManager implements EventManager {
     return current.y;
   }
 
-  protected int pressedCount;
+  public int pressedCount;
   protected int clickedCount;
 
   private boolean drawMode;
@@ -857,6 +858,14 @@ public class ActionManager implements EventManager {
   private int dragAction;
   private int clickAction;
 
+  public void setClickedCount(int c){
+    clickedCount = c;
+  }
+  
+  public void setPressedCount(int p){
+    pressedCount = p;
+  }
+  
   private void setMouseActions(int count, int buttonMods, boolean isRelease) {
     pressAction = Binding.getMouseAction(count, buttonMods,
         isRelease ? Event.RELEASED : Event.PRESSED);
@@ -919,6 +928,10 @@ public class ActionManager implements EventManager {
       checkPressedAction(x, y, time);
       return;
     case Event.DRAGGED:
+        //Disable rotation interaction (only, but not translation) during VR mode
+        if(OculusWS.isEnabled() && OculusWS.isVRMode() && ((dragged.modifiers & Binding.SHIFT) == 0)){
+            return;
+        }
       setMouseMode();
       setMouseActions(pressedCount, buttonMods, false);
       int deltaX = x - dragged.x;
@@ -1041,7 +1054,7 @@ public class ActionManager implements EventManager {
     checkMotionRotateZoom(dragAction, x, 0, 0, true);
   }
 
-  private void checkDragWheelAction(int dragWheelAction, int x, int y,
+  public void checkDragWheelAction(int dragWheelAction, int x, int y,
                                     int deltaX, int deltaY, long time, int mode) {
     int buttonmods = Binding.getButtonMods(dragWheelAction);
     if (buttonmods != 0) {
@@ -1795,7 +1808,14 @@ public class ActionManager implements EventManager {
       if (!bnd(clickAction, ACTION_pickAtom))
         return;
       if (ptClicked == null) {
+          if(OculusWS.isEnabled()){
+            /*Send clicks on atoms to the OculusWS singleton to handle it
+            * Otherwise send it to default handler
+            */
+            OculusWS.centerOnAtom(atomIndex);
+          } else {
         zoomTo(atomIndex);
+          }
       } else {
         runScript("zoomTo " + Escape.eP(ptClicked));
       }

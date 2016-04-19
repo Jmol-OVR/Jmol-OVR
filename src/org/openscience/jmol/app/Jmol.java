@@ -23,7 +23,7 @@
  */
 package org.openscience.jmol.app;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -37,6 +37,23 @@ public class Jmol extends JmolPanel {
   public Jmol(JmolApp jmolApp, Splash splash, JFrame frame, Jmol parent, int startupWidth,
       int startupHeight, Map<String, Object> vwrOptions, Point loc) {
     super(jmolApp, splash, frame, parent, startupWidth, startupHeight, vwrOptions, loc);
+
+    //Assumes oculus is in extended desktop mode and is designated as the second screen (i.e index 1)
+    if(vwrOptions.get("oculusVRMode") != null){
+      showOnScreen(1, frame);
+	}
+  }
+
+  public static void showOnScreen( int screen, JFrame frame ) {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] gs = ge.getScreenDevices();
+    if( screen > -1 && screen < gs.length ) {
+      gs[screen].setFullScreenWindow( frame );
+    } else if( gs.length > 0 ) {
+      gs[0].setFullScreenWindow( frame );
+    } else {
+      throw new RuntimeException( "No Screens Found" );
+    }
   }
 
   public static void main(String[] args) {

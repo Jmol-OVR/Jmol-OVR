@@ -42,6 +42,7 @@ import javajs.util.PT;
 import org.jmol.script.T;
 import org.jmol.util.Logger;
 import org.jmol.viewer.Viewer;
+import org.mosmar.ovrui.OculusWS;
 
 /**
  * formerly org.jmol.viewer.MouseManager14
@@ -174,9 +175,17 @@ class Mouse implements MouseWheelListener, MouseListener,
   @Override
   public void keyTyped(KeyEvent ke) {
     ke.consume();
+    char ch = Character.toUpperCase(ke.getKeyChar());
+
+    //If oculus mode is enabled use BackSpace to toggle between mouse and vr mode
+    if(OculusWS.isEnabled()){
+      if(ch == KeyEvent.VK_BACK_SPACE){
+        OculusWS.toggleMode();
+      }
+    }
+
     if (!vwr.menuEnabled())
       return;
-    char ch = ke.getKeyChar();
     int modifiers = ke.getModifiers();
     // for whatever reason, CTRL may also drop the 6- and 7-bits,
     // so we are in the ASCII non-printable region 1-31

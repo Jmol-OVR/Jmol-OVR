@@ -117,6 +117,8 @@ Bob Hanson hansonr@stolaf.edu 11/26/2013
   <property name="docbook-xml" value="docbook-xml-4.4" />
   <property name="naga.jar" value="naga-3_0.jar" />
   <property name="commons-cli.jar" value="commons-cli-1.2.jar" />
+  <property name="jna.jar" value="jna-4.1.0.jar" />
+  <property name="jovr.jar" value="jovr-0.4.4.0.jar" />
   <property name="saxon.jar" value="saxon.jar" />
   <property name="saxon.main" value="com.icl.saxon.StyleSheet" />
   <property name="selfsign.store" value="ca-cert/selfSignedCertificate/selfSignedCertificate.store" />
@@ -435,6 +437,8 @@ all support for previous versions removed
     <condition property="libjars.uptodate">
       <and>
         <uptodate targetfile="${appjars.dir}">
+          <srcfiles dir="${lib.dir}" includes="${jna.jar}"/>
+          <srcfiles dir="${lib.dir}" includes="${jovr.jar}"/>
           <srcfiles dir="${lib.dir}" includes="${naga.jar}"/>
           <srcfiles dir="${lib.dir}" includes="${commons-cli.jar}"/>
           <srcfiles dir="${lib.dir}" includes="JSpecView.jar"/>
@@ -468,6 +472,8 @@ all support for previous versions removed
     <!-- unjar dest="${appjars.dir}" src="${lib.dir}/${vecmath.jar}"/ -->
     <!-- unjar dest="${appjars.dir}" src="${lib.dir}/Acme.jar"/ -->
     <!-- unjar dest="${appjars.dir}" src="${lib.dir}/${itext.jar}"/ -->
+    <unjar dest="${appjars.dir}" src="${lib.dir}/${jovr.jar}"/>
+    <unjar dest="${appjars.dir}" src="${lib.dir}/${jna.jar}"/>
     <unjar dest="${appjars.dir}" src="${lib.dir}/${naga.jar}"/>
     <unjar dest="${appjars.dir}" src="${lib.dir}/${commons-cli.jar}"/>
     <unjar dest="${appjars.dir}" src="${lib.dir}/JSpecView.jar"/>
@@ -501,6 +507,7 @@ all support for previous versions removed
         <exclude name="**/*.dx" />
         <exclude name="ant/**" />
         <include name="com/**" />
+        <include name="org/mosmar/**" />
         <include name="javajs/api/**" />
         <include name="javajs/awt/**" />
         <include name="javajs/export/**" />
@@ -547,7 +554,7 @@ all support for previous versions removed
         <exclude name="**/openscience/jmol/app/jmolpanel/**" />
         <exclude name="**/openscience/jmol/app/webexport/**" />
       </fileset>
-      <fileset dir="${appjars.dir}" includes="**/cli/** **/naga/**" />
+      <fileset dir="${appjars.dir}" includes="**/cli/** **/naga/**  **/jovr/** **/jna/**" />
       <fileset dir="src/org/jmol/translation/Jmol" includes="Messages*.class"/>
       <fileset dir="src/org/jmol/translation/JmolApplet" includes="Messages*.class"/>
     </jar>
