@@ -167,6 +167,9 @@ public final class JC {
         }
       }
     }
+    if(tmpDate!= null && tmpDate.length() < 23) {
+      tmpDate=null;
+    }
     if (tmpDate != null) {
       tmpDate = tmpDate.substring(7, 23);
       // NOTE : date is updated in the properties by SVN, and is in the format
