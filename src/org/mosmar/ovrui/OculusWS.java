@@ -35,7 +35,7 @@ public class OculusWS {
     public static final int MODE_VR = 1;
     
 
-    private static int mMode = MODE_MOUSE;
+    private static int mMode = MODE_VR;
     private static boolean mIsEnabled = false;
 
     private static int mSelectedAtom = -1;
@@ -69,17 +69,21 @@ public class OculusWS {
         * atom
         */
         String script = null;
-        if(OculusWS.isVRMode()){
-            script =
-                "display (all);"
-                + "zoomTo (atomindex=" + Integer.toString(index) + ") 8000;"
-                + "hide (atomindex=" + Integer.toString(index) + ");";
+    //        if(OculusWS.isVRMode()){
+    //            script =
+    //                "display (all);"
+    //                + "zoomTo (atomindex=" + Integer.toString(index) + ") 8000;"
+    //                + "hide (atomindex=" + Integer.toString(index) + ");";
+    //
+    //        } else {
+    //            script =
+    //                "display (all);"
+    //                + "zoomTo (atomindex=" + Integer.toString(index) + ") 100;";
+    //        }
 
-        } else {
+
             script =
-                "display (all);"
-                + "zoomTo (atomindex=" + Integer.toString(index) + ") 100;";
-        }
+        "zoomTo (atomindex=" + Integer.toString(index) + ") ;";
 
         instance.mViewer.script(script);
 
@@ -101,9 +105,12 @@ public class OculusWS {
        * We'll want to show that back again, We zoom back to 100
        */
       
+    //        String script =
+    //            "display (all);"
+    //            + "zoomTo (atomindex=" + Integer.toString(mSelectedAtom) + ") 100;"
+    //            + "set picking center;";
         String script =
-            "display (all);"
-            + "zoomTo (atomindex=" + Integer.toString(mSelectedAtom) + ") 100;"
+        "zoomTo (atomindex=" + mSelectedAtom + ") ;"
             + "set picking center;";
         instance.mViewer.script(script);
         //instance.mViewer.refresh(1,"");
@@ -112,24 +119,15 @@ public class OculusWS {
 
     public static void activateVRMode(){
       //No atoms selected? Select the first atom in the molecule
-        if(mSelectedAtom == -1){
-            mSelectedAtom = 0;
-        }
-        /*
-         * What this mode does is
-         * 1) Show all atoms
-         * 2) Zoom to a value of 8000 on the central atom
-         * 3) Hide that atom to remove it from the view and produce the illusion that 
-         *    the observer is inside the atom
-         *    
-         *    I probably don't need all these repetitive calls to "set picking center"
-         *    
-         */
+    String target;
+    //        if(mSelectedAtom == -1){
+    //          target= " { 0 0 0 }";
+    //        }else{
+    //          target ="(atomindex=" + mSelectedAtom + ")";
+    //        }
+    target= (mSelectedAtom == -1)? " { 0 0 0 }" : ("(atomindex=" + mSelectedAtom + ")");
         String script =
-            "set picking center;"
-            +"display (all);"
-//            + "zoomTo (atomindex=" + Integer.toString(mSelectedAtom) + ") 8000;"
-//            + "hide (atomindex=" + Integer.toString(mSelectedAtom) + ");"
+        "zoomTo " + target + ";"
             + "set picking center;";
         instance.mViewer.script(script);
         mMode = MODE_VR;
@@ -155,15 +153,14 @@ public class OculusWS {
      * 
      * @param v JMol Viewer Object
      * @param tm JMol Transform Manager Object
-     *
-     * @throws java.net.UnknownHostException
+   * @param am 
      */
     public void init(Viewer v, TransformManager tm, ActionManager am) {
 
         mTM = tm;
         mAM = am;
         mViewer = v;
-        new Thread(new Runnable() {
+        new Thread() {
             @Override
             public void run() {
               //Hmd stands for Head Mounted Display, That is our oculus :)
@@ -202,8 +199,7 @@ public class OculusWS {
                 hmd.destroy();
                 Hmd.shutdown();
             }
-        }).start();
-
+        }.start();
     }
 
     //This methods is called whenever a new molecule is loaded
@@ -211,9 +207,11 @@ public class OculusWS {
         /*
          * ENables steroscopic mode and sets the size of atoms to be 15% of vander walls width
          */
-        instance.mViewer.runScript("wireframe 0.15;spacefill reset;spacefill 15%;");
+      //  instance.mViewer.runScript("wireframe 0.15;spacefill reset;spacefill 15%;");
         instance.mViewer.runScript("stereo 0");
-        activateMouseMode();
+        // TODO Nafisa to change here
+        activateVRMode();
+       // activateMouseMode();
     }
 
     private static class SensorFetcher implements Runnable {
