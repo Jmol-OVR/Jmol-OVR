@@ -3251,7 +3251,9 @@ public class Viewer extends JmolViewer implements AtomDataServer,
       this.inMotion = inMotion;
       resizeImage(0, 0, false, false, true); // for antialiasdisplay
       if (inMotion) {
-        startHoverWatcher(false);
+        if (OculusWS.isMouseMode()) {
+          startHoverWatcher(false);
+        }
         ++motionEventNumber;
       } else {
         startHoverWatcher(true);

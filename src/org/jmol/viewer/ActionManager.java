@@ -87,7 +87,7 @@ public class ActionManager implements EventManager {
   protected Thread hoverWatcherThread;
 
   public void checkHover() {
-    if (!vwr.getInMotion(true) && !vwr.tm.spinOn && !vwr.tm.navOn
+    if (OculusWS.isVRMode() || !vwr.getInMotion(true) && !vwr.tm.spinOn && !vwr.tm.navOn
         && !vwr.checkObjectHovered(current.x, current.y)) {
       int atomIndex = vwr.findNearestAtomIndex(current.x, current.y);
       if (atomIndex < 0)
